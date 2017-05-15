@@ -10,7 +10,8 @@ $(function(){
       txt += 'bio: ' + user.bio + '<br>';
       txt += 'live: ' + user.location + '<br>';
       $('.info').append(txt);
-      $('.avatar').attr('src', user.avatar_url)
+      $('.avatar').attr('src', user.avatar_url);
+      $('.github-link').attr('href', user.html_url);
     });
 
   function getRepos(page){
