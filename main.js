@@ -34,9 +34,9 @@ $(function(){
   function addElem(repo){
     var elem = ""
     if(repo.description != null){
-      elem = '<li><a href="' + repo.html_url + '">' + repo.name + '</a> - ' + repo.language + ' ' + repo.description + '</li>';
+      elem = '<li><a target="_blank" href="' + repo.html_url + '">' + repo.name + '</a> - ' + repo.language + ' ' + repo.description + '</li>';
     }else{
-      elem = '<li><a href="' + repo.html_url + '">' + repo.name + '</a> - ' + repo.language + '</li>';
+      elem = '<li><a target="_blank" href="' + repo.html_url + '">' + repo.name + '</a> - ' + repo.language + '</li>';
     }
     $('.repos').append(elem);
   }
