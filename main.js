@@ -1,11 +1,20 @@
 $(function(){
-  var url = 'https://api.github.com/users/Rompei/repos?sort=updated&per_page=100&page=';
+  var repoUrl = 'https://api.github.com/users/Rompei/repos?sort=updated&per_page=100&page=';
   var page = 1;
   var count = 0;
   getRepos(page);
 
+  $.get('https://api.github.com/users/Rompei')
+    .then(function(user){
+      var txt = 'name: ' + user.name + '<br>';
+      txt += 'bio: ' + user.bio + '<br>';
+      txt += 'live: ' + user.location + '<br>';
+      $('.info').append(txt);
+      $('.avatar').attr('src', user.avatar_url)
+    });
+
   function getRepos(page){
-    u = url+page
+    u = repoUrl+page
     $.get(u)
       .then(function(repos){
         for(var i=0; i < repos.length; i++){
