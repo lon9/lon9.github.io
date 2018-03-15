@@ -1,5 +1,5 @@
 $(function(){
-  var repoUrl = 'https://api.github.com/users/Rompei/repos?sort=updated&per_page=100&page=';
+  var repoUrl = 'https://api.github.com/users/lon9/repos?sort=updated&per_page=100&page=';
   var page = 1;
   var count = 0;
   getRepos(page);
