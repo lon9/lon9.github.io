@@ -4,7 +4,7 @@ $(function(){
   var count = 0;
   getRepos(page);
 
-  $.get('https://api.github.com/users/Rompei')
+  $.get('https://api.github.com/users/lon9')
     .then(function(user){
       var txt = 'name: ' + user.name + '<br>';
       txt += 'bio: ' + user.bio + '<br>';
