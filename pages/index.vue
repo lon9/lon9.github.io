@@ -25,7 +25,6 @@ async function getRepos(url, reposData, page, options){
     if(reposData.length != 0)
       reposData = []
     reposData.concat(res.data)
-    console.log(reposEtag)
     if(res.data.length == 100){
       getRepos(reposData, page++, count, options)
     }
