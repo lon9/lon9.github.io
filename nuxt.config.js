@@ -33,7 +33,14 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    }
+    },
+    vendor: [
+      'axios'
+    ]
+  },
+  plugins: [{ src: '~/plugins/localStorage.js', ssr: false }],
+  env: {
+    userName: process.env.USER_NAME || 'rsc'
   }
 }
 
