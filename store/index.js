@@ -29,5 +29,16 @@ export const mutations = {
 }
 
 export const actions = {
-  
+  setUser(context, userEtag, user){
+    context.commit('setUserEtag', userEtag)
+    context.commit('setUser', user)
+  },
+  setRepos(context, reposEtag, repos){
+    context.commit('setReposEtag', reposEtag)
+    context.commit('setRepos', repos)
+  },
+  setStars(context, starsEtag, stars){
+    context.commit('setStarsEtag', starsEtag)
+    context.commit('setStars', stars)
+  }
 }
