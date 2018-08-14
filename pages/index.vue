@@ -17,7 +17,7 @@
     <h4>Public repositories ({{ repos.length }})</h4>
     <ul>
       <li v-for="repo in repos" :key="repo.id">
-        <a target="_blank" :href="repo.html_url">{{ repo.name }}</a> <span v-if="repo.language || repo.description">-</span> {{ repo.language }} {{ repo.description }}
+        <a target="_blank" :href="repo.html_url">{{ repo.name }}</a><span v-if="repo.language || repo.description"> -</span> {{ repo.language }} {{ repo.description }}
       </li>
     </ul>
     <br>
