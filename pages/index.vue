@@ -2,7 +2,7 @@
 <div>
   <section id="profile">
     <h4>Profile</h4>
-    <a target="_blank" :href="user.html_url"><img :src="user.avatar_url"></a>
+    <a target="_blank" :href="user.html_url"><img :src="user.avatar_url" width="128" height="128"></a>
     <p>
       <span v-if="user.name">Name: {{ user.name }}<br></span>
       <span v-if="user.bio">Bio: {{ user.bio }}<br></span>
@@ -133,11 +133,11 @@ export default {
     const [r1, r2, r3] = await Promise.all([fn1, fn2, fn3])
     if(r1.status == 200)
       this.user = r1.data
-    else if(r1.status == 304)
+    else
       this.user = this.$store.state.user
-    if(r2.status == 304)
+    if(r2.status != 200)
       this.repos = this.$store.state.repos
-    if(r3.status == 304)
+    if(r3.status != 200)
       this.stars = this.$store.state.stars
 
     this.$store.commit('setUserETag', r1.headers['etag'])
