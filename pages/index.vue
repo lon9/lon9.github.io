@@ -26,7 +26,7 @@
     <h4>Starred repositories ({{ stars.length }})</h4>
     <ul>
       <li v-for="star in stars" :key="star.id">
-        <a target="_blank" :href="star.html_url">{{ star.name }}</a><span v-if="repo.language || repo.description"> -</span> {{ star.language }} {{ star.description }}
+        <a target="_blank" :href="star.html_url">{{ star.name }}</a><span v-if="star.language || star.description"> -</span> {{ star.language }} {{ star.description }}
       </li>
     </ul>
     <br>
