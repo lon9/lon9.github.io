@@ -2,22 +2,20 @@
 
 > My github.io.
 
-## Build Setup
+## Usage
 
-``` bash
-# install dependencies
-$ npm install # Or yarn install
+```bash
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+# set your username as environment variable
+$ export USER_NAME=[Your github username]
 
-# build for production and launch server
-$ npm run build
-$ npm start
+# generate favicon from your github icon
+$ npm run mkfav
 
-# generate static project
+# generate static pages
 $ npm run generate
+
+# deploy to github
+$ npm run deploy
+
 ```
-
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
-
