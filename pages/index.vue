@@ -1,6 +1,6 @@
 <template>
 <div>
-  <section id="profile">
+  <section v-if="Object.keys(user).length != 0" id="profile">
     <h4>Profile</h4>
     <a target="_blank" :href="user.html_url"><img :src="user.avatar_url" width="128" height="128"></a>
     <p>
