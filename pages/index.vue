@@ -110,12 +110,12 @@ export default {
     }
   },
   async asyncData(){
-    let { data } = await axios.get('https://raw.githubusercontent.com/ozh/github-colors/master/colors.json')
+    const { data } = await axios.get('https://raw.githubusercontent.com/ozh/github-colors/master/colors.json')
     return { languages: data }
   },
   async created(){
     // Get user info
-    let fn1 = getUserFn(`https://api.github.com/users/${process.env.userName}`, 
+    const fn1 = getUserFn(`https://api.github.com/users/${process.env.userName}`, 
       this.$store.state.userETag)
 
     // Get repositories
