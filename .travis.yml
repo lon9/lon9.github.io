@@ -12,6 +12,7 @@ branches:
 
 install:
   - npm install
+  - npm run mkfav
   - npm run generate
 
 script:
@@ -20,7 +21,7 @@ script:
 deploy:
   provider: pages
   skip-cleanup: true
-  github-token: $GITHUB_ACCESS_TOKEN  # セキュアとマークされたアクセストークンを travis-ci.org のダッシュボードに設定してください。https://docs.travis-ci.com/user/deployment/pages/#Setting-the-GitHub-token
+  github-token: $GITHUB_ACCESS_TOKEN
   target-branch: master
   local-dir: dist
   on:
