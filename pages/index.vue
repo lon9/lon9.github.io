@@ -20,7 +20,7 @@
       <h4>Public repositories ({{ repos.length }})</h4>
       <ul>
         <li v-for="repo in repos" :key="repo.id">
-          <a target="_blank" :href="repo.html_url">{{ repo.name }}</a><span v-if="repo.language || repo.description"> -</span> {{ repo.language }} {{ repo.description }}
+          <a target="_blank" :href="repo.html_url">{{ repo.name }}</a><span v-if="repo.language || repo.description"> - </span><font :color="languages[repo.language] != undefined ? languages[repo.language].color : '#000000'">{{ repo.language }}</font> {{ repo.description }}
         </li>
       </ul>
     </section>
@@ -28,7 +28,7 @@
       <h4>Starred repositories ({{ stars.length }})</h4>
       <ul>
         <li v-for="star in stars" :key="star.id">
-          <a target="_blank" :href="star.html_url">{{ star.name }}</a><span v-if="star.language || star.description"> -</span> {{ star.language }} {{ star.description }}
+          <a target="_blank" :href="star.html_url">{{ star.name }}</a><span v-if="star.language || star.description"> - </span><font :color="languages[star.language] != undefined ? languages[star.language].color : '#000000'">{{ star.language }}</font> {{ star.description }}
         </li>
       </ul>
     </section>
@@ -72,6 +72,10 @@ export default {
       stars: [],
       loading: true
     }
+  },
+  async asyncData(){
+    let { data } = await axios.get('https://raw.githubusercontent.com/ozh/github-colors/master/colors.json')
+    return { languages: data }
   },
   async created(){
     
