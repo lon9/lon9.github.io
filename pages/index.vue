@@ -9,6 +9,11 @@
           v-bind:user="user"
         ></Profile>
       </section>
+      <section v-if="hasPageRepos.length != 0" id="pages">
+        <GithubPages
+          v-bind:repos="hasPageRepos"
+        ></GithubPages>
+      </section>
       <section v-if="repos.length != 0" id="repos">
         <Repositories
           title="Public repositories"
@@ -107,6 +112,15 @@ export default {
       repos: [],
       stars: [],
       loading: true
+    }
+  },
+  computed: {
+    hasPageRepos: () => {
+      if(this.repos == undefined)
+        return []
+      return this.repos.filter((repo) => {
+        return repo.has_pages
+      })
     }
   },
   async asyncData(){
