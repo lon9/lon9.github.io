@@ -1,36 +1,38 @@
 <template>
 <div>
-  <section v-if="Object.keys(user).length != 0" id="profile">
-    <h4>Profile</h4>
-    <a target="_blank" :href="user.html_url"><img :src="user.avatar_url" width="128" height="128"></a>
-    <p>
-      <span v-if="user.name">Name: {{ user.name }}<br></span>
-      <span v-if="user.bio">Bio: {{ user.bio }}<br></span>
-      <span v-if="user.location">Location: {{ user.location }}<br></span>
-      <span v-if="user.email">Email: {{ user.email }}<br></span>
-      <span v-if="user.company">Company: {{ user.company }}<br></span>
-      <span v-if="user.blog">Blog: {{ user.blog }}</span>
-    </p>
-    <br>
-  </section>
-  <section v-if="repos.length != 0" id="repos">
-    <h4>Public repositories ({{ repos.length }})</h4>
-    <ul>
-      <li v-for="repo in repos" :key="repo.id">
-        <a target="_blank" :href="repo.html_url">{{ repo.name }}</a><span v-if="repo.language || repo.description"> -</span> {{ repo.language }} {{ repo.description }}
-      </li>
-    </ul>
-    <br>
-  </section>
-  <section v-if="stars.length != 0" id="stars">
-    <h4>Starred repositories ({{ stars.length }})</h4>
-    <ul>
-      <li v-for="star in stars" :key="star.id">
-        <a target="_blank" :href="star.html_url">{{ star.name }}</a><span v-if="star.language || star.description"> -</span> {{ star.language }} {{ star.description }}
-      </li>
-    </ul>
-    <br>
-  </section>
+  <div v-if="loading">
+    loading...
+  </div>
+  <div v-else>
+    <section v-if="Object.keys(user).length != 0" id="profile">
+      <h4>Profile</h4>
+      <a target="_blank" :href="user.html_url"><img :src="user.avatar_url" width="128" height="128"></a>
+      <p>
+        <span v-if="user.name">Name: {{ user.name }}<br></span>
+        <span v-if="user.bio">Bio: {{ user.bio }}<br></span>
+        <span v-if="user.location">Location: {{ user.location }}<br></span>
+        <span v-if="user.email">Email: {{ user.email }}<br></span>
+        <span v-if="user.company">Company: {{ user.company }}<br></span>
+        <span v-if="user.blog">URL: {{ user.blog }}</span>
+      </p>
+    </section>
+    <section v-if="repos.length != 0" id="repos">
+      <h4>Public repositories ({{ repos.length }})</h4>
+      <ul>
+        <li v-for="repo in repos" :key="repo.id">
+          <a target="_blank" :href="repo.html_url">{{ repo.name }}</a><span v-if="repo.language || repo.description"> -</span> {{ repo.language }} {{ repo.description }}
+        </li>
+      </ul>
+    </section>
+    <section v-if="stars.length != 0" id="stars">
+      <h4>Starred repositories ({{ stars.length }})</h4>
+      <ul>
+        <li v-for="star in stars" :key="star.id">
+          <a target="_blank" :href="star.html_url">{{ star.name }}</a><span v-if="star.language || star.description"> -</span> {{ star.language }} {{ star.description }}
+        </li>
+      </ul>
+    </section>
+  </div>
 </div>
 </template>
 
@@ -67,7 +69,8 @@ export default {
     return {
       user: {},
       repos: [],
-      stars: []
+      stars: [],
+      loading: true
     }
   },
   async created(){
@@ -139,6 +142,7 @@ export default {
       this.repos = this.$store.state.repos
     if(r3.status != 200)
       this.stars = this.$store.state.stars
+    this.loading = false
 
     this.$store.commit('setUserETag', r1.headers['etag'])
     this.$store.commit('setReposETag', r2.headers['etag'])
