@@ -1,37 +1,37 @@
 <template>
-<div>
-  <div v-if="loading">
-    loading...
+  <div>
+    <div v-if="loading">
+      loading...
+    </div>
+    <div v-else>
+      <section v-if="Object.keys(user).length != 0" id="profile">
+        <Profile
+          v-bind:user="user"
+        ></Profile>
+      </section>
+      <section v-if="repos.length != 0" id="repos">
+        <Repositories
+          title="Public repositories"
+          v-bind:repos="repos"
+          v-bind:languages="languages"
+        ></Repositories>
+      </section>
+      <section v-if="stars.length != 0" id="stars">
+        <Repositories
+          title="Starred repositories"
+          v-bind:repos="stars"
+          v-bind:languages="languages"
+        ></Repositories>
+      </section>
+    </div>
   </div>
-  <div v-else>
-    <section v-if="Object.keys(user).length != 0" id="profile">
-      <Profile
-        v-bind:user="user"
-      ></Profile>
-    </section>
-    <section v-if="repos.length != 0" id="repos">
-      <Repositories
-        title="Public repositories"
-        v-bind:repos="repos"
-        v-bind:languages="languages"
-      ></Repositories>
-    </section>
-    <section v-if="stars.length != 0" id="stars">
-      <Repositories
-        title="Starred repositories"
-        v-bind:repos="stars"
-        v-bind:languages="languages"
-      ></Repositories>
-    </section>
-  </div>
-</div>
 </template>
 
 <script>
+import axios from 'axios'
+
 import Profile from '~/components/Profile'
 import Repositories from '~/components/Repositories'
-
-import axios from 'axios'
 
 const PER_PAGE = 100
 
