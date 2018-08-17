@@ -1,47 +1,41 @@
 <template>
-<div>
-  <div v-if="loading">
-    loading...
+  <div>
+    <div v-if="loading">
+      loading...
+    </div>
+    <div v-else>
+      <section v-if="Object.keys(user).length != 0" id="profile">
+        <Profile
+          v-bind:user="user"
+        ></Profile>
+      </section>
+      <section v-if="repos.length != 0" id="repos">
+        <Repositories
+          title="Public repositories"
+          v-bind:repos="repos"
+          v-bind:languages="languages"
+        ></Repositories>
+      </section>
+      <section v-if="stars.length != 0" id="stars">
+        <Repositories
+          title="Starred repositories"
+          v-bind:repos="stars"
+          v-bind:languages="languages"
+        ></Repositories>
+      </section>
+    </div>
   </div>
-  <div v-else>
-    <section v-if="Object.keys(user).length != 0" id="profile">
-      <h4>Profile</h4>
-      <a target="_blank" :href="user.html_url"><img :src="user.avatar_url" width="128" height="128"></a>
-      <p>
-        <span v-if="user.name">Name: {{ user.name }}<br></span>
-        <span v-if="user.bio">Bio: {{ user.bio }}<br></span>
-        <span v-if="user.location">Location: {{ user.location }}<br></span>
-        <span v-if="user.email">Email: {{ user.email }}<br></span>
-        <span v-if="user.company">Company: {{ user.company }}<br></span>
-        <span v-if="user.blog">URL: {{ user.blog }}</span>
-      </p>
-    </section>
-    <section v-if="repos.length != 0" id="repos">
-      <h4>Public repositories ({{ repos.length }})</h4>
-      <ul>
-        <li v-for="repo in repos" :key="repo.id">
-          <a target="_blank" :href="repo.html_url">{{ repo.name }}</a><span v-if="repo.language || repo.description"> - </span><font :color="languages[repo.language] != undefined ? languages[repo.language].color : '#000000'">{{ repo.language }}</font> {{ repo.description }}
-        </li>
-      </ul>
-    </section>
-    <section v-if="stars.length != 0" id="stars">
-      <h4>Starred repositories ({{ stars.length }})</h4>
-      <ul>
-        <li v-for="star in stars" :key="star.id">
-          <a target="_blank" :href="star.html_url">{{ star.name }}</a><span v-if="star.language || star.description"> - </span><font :color="languages[star.language] != undefined ? languages[star.language].color : '#000000'">{{ star.language }}</font> {{ star.description }}
-        </li>
-      </ul>
-    </section>
-  </div>
-</div>
 </template>
 
 <script>
 import axios from 'axios'
 
+import Profile from '~/components/Profile'
+import Repositories from '~/components/Repositories'
+
 const PER_PAGE = 100
 
-async function getRepos(url, reposData, options){
+const getRepos = async (url, reposData, options) => {
 
   let page = 1
   let firstResponse
@@ -64,6 +58,48 @@ async function getRepos(url, reposData, options){
   return firstResponse
 }
 
+const getReposFn = (url, reposData, etag) => {
+  let fn
+  if(etag){
+    fn = getRepos(url, reposData, {
+      headers: {
+        'If-None-Match': etag
+      },
+      validateStatus: (status) => {
+        return status < 500
+      }
+    })
+  }else{
+    fn = getRepos(url, reposData, {
+      validateStatus: (status) => {
+        return status < 500
+      }
+    })
+  }
+  return fn
+}
+
+const getUserFn = (url, etag) => {
+  let fn
+  if(etag){
+    fn =  axios.get(url, {
+      headers: {
+        'If-None-Match': etag
+      },
+      validateStatus: (status) => {
+        return status < 500
+      }
+    })
+  }else{
+    fn = axios.get(url, {
+      validateStatus: (status) => {
+        return status < 500
+      }
+    })
+  }
+  return fn
+}
+
 export default {
   data(){
     return {
@@ -74,70 +110,24 @@ export default {
     }
   },
   async asyncData(){
-    let { data } = await axios.get('https://raw.githubusercontent.com/ozh/github-colors/master/colors.json')
+    const { data } = await axios.get('https://raw.githubusercontent.com/ozh/github-colors/master/colors.json')
     return { languages: data }
   },
   async created(){
-    
-    let fn1, fn2, fn3;
     // Get user info
-    let url = `https://api.github.com/users/${process.env.userName}`
-    if(this.$store.state.userETag != ''){
-      fn1 =  axios.get(url, {
-        headers: {
-          'If-None-Match': this.$store.state.userETag
-        },
-        validateStatus: (status) => {
-          return status < 500
-        }
-      })
-    }else{
-      fn1 = axios.get(url, {
-        validateStatus: (status) => {
-          return status < 500
-        }
-      })
-    }
+    const fn1 = getUserFn(`https://api.github.com/users/${process.env.userName}`, 
+      this.$store.state.userETag)
 
     // Get repositories
-    url = `https://api.github.com/users/${process.env.userName}/repos`
-    if(this.$store.state.reposETag != ''){
-      fn2 = getRepos(url, this.repos, {
-        headers: {
-          'If-None-Match': this.$store.state.reposETag
-        },
-        validateStatus: (status) => {
-          return status < 500
-        }
-      })
-    }else{
-      fn2 = getRepos(url, this.repos, {
-        validateStatus: (status) => {
-          return status < 500
-        }
-      })
-    }
+    const fn2 = getReposFn(`https://api.github.com/users/${process.env.userName}/repos`, 
+      this.repos, this.$store.state.reposETag)
 
     // Get stars
-    url = `https://api.github.com/users/${process.env.userName}/starred`
-    if(this.$store.state.starsETag != ''){
-      fn3 = getRepos(url, this.stars, {
-        headers: {
-          'If-None-Match': this.$store.state.starsETag
-        },
-        validateStatus: (status) => {
-          return status < 500
-        }
-      })
-    }else{
-      fn3 = getRepos(url, this.stars, {
-        validateStatus: (status) => {
-          return status < 500
-        }
-      })
-    }
+    const fn3 = getReposFn(`https://api.github.com/users/${process.env.userName}/starred`, 
+      this.stars, this.$store.state.starsETag)
 
     const [r1, r2, r3] = await Promise.all([fn1, fn2, fn3])
+    
     if(r1.status == 200)
       this.user = r1.data
     else
@@ -146,14 +136,20 @@ export default {
       this.repos = this.$store.state.repos
     if(r3.status != 200)
       this.stars = this.$store.state.stars
+
     this.loading = false
 
+    // Store to store
     this.$store.commit('setUserETag', r1.headers['etag'])
     this.$store.commit('setReposETag', r2.headers['etag'])
     this.$store.commit('setStarsETag', r3.headers['etag'])
     this.$store.commit('setUser', this.user)
     this.$store.commit('setRepos', this.repos)
     this.$store.commit('setStars', this.stars)
+  },
+  components: {
+    Profile,
+    Repositories
   }
 }
 
