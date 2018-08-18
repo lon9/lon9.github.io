@@ -3,11 +3,14 @@ module.exports = {
   ** Headers of the page
   */
   head: {
+    htmlAttrs: {
+      lang: 'en',
+    },
     title: `${process.env.USER_NAME || 'rsc'}.github.io`,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'My github.io.' }
+      { hid: 'description', name: 'description', content: `${process.env.USER_NAME || 'rsc'}'s github.io` }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }

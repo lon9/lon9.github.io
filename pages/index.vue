@@ -9,6 +9,11 @@
           v-bind:user="user"
         ></Profile>
       </section>
+      <section v-if="hasPageRepos.length != 0" id="pages">
+        <GithubPages
+          v-bind:repos="hasPageRepos"
+        ></GithubPages>
+      </section>
       <section v-if="repos.length != 0" id="repos">
         <Repositories
           title="Public repositories"
@@ -32,6 +37,7 @@ import axios from 'axios'
 
 import Profile from '~/components/Profile'
 import Repositories from '~/components/Repositories'
+import GithubPages from '~/components/GithubPages'
 
 const PER_PAGE = 100
 
@@ -105,6 +111,7 @@ export default {
     return {
       user: {},
       repos: [],
+      hasPageRepos: [],
       stars: [],
       loading: true
     }
@@ -137,6 +144,10 @@ export default {
     if(r3.status != 200)
       this.stars = this.$store.state.stars
 
+    this.hasPageRepos = this.repos.filter((repo) => {
+      return repo.has_pages && repo.name != `${this.user.login}.github.io`
+    })
+
     this.loading = false
 
     // Store to store
@@ -149,7 +160,8 @@ export default {
   },
   components: {
     Profile,
-    Repositories
+    Repositories,
+    GithubPages
   }
 }
 
