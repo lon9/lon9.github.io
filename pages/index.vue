@@ -37,6 +37,7 @@ import axios from 'axios'
 
 import Profile from '~/components/Profile'
 import Repositories from '~/components/Repositories'
+import GithubPages from '~/components/GithubPages'
 
 const PER_PAGE = 100
 
@@ -110,17 +111,9 @@ export default {
     return {
       user: {},
       repos: [],
+      hasPageRepos: [],
       stars: [],
       loading: true
-    }
-  },
-  computed: {
-    hasPageRepos: () => {
-      if(this.repos == undefined)
-        return []
-      return this.repos.filter((repo) => {
-        return repo.has_pages
-      })
     }
   },
   async asyncData(){
@@ -151,6 +144,10 @@ export default {
     if(r3.status != 200)
       this.stars = this.$store.state.stars
 
+    this.hasPageRepos = this.repos.filter((repo) => {
+      return repo.has_pages && repo.name != `${this.user.login}.github.io`
+    })
+
     this.loading = false
 
     // Store to store
@@ -163,7 +160,8 @@ export default {
   },
   components: {
     Profile,
-    Repositories
+    Repositories,
+    GithubPages
   }
 }
 

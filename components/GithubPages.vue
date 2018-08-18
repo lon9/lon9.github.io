@@ -3,7 +3,7 @@
     <h4>Contents</h4>
     <ul>
       <li v-for="repo in repos" :key="repo.id">
-        <a target="_blank" :href="`${repo.owner.login}.github.io/${repo.name}`">{{ repo.name }}</a>
+        <a target="_blank" :href="`https://${repo.owner.login}.github.io/${repo.name}`">{{ repo.name }}</a>
       </li>
     </ul>
   </div>
