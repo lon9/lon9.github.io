@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "nuxt": "^1.0.0",
+    "nuxt": "^2.6.1",
     "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
