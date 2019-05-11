@@ -39,6 +39,10 @@ module.exports = {
     }
   },
   plugins: [{ src: '~/plugins/localStorage.js', ssr: false }],
+
+  modules: [
+    '@nuxt/http'
+  ],
   env: {
     userName: process.env.USER_NAME || 'rsc'
   }
