@@ -1,6 +1,4 @@
-const fs = require('fs')
 const axios = require('axios')
-const toIco = require('to-ico')
 const sharp = require('sharp')
 
 const main = async () => {
@@ -14,18 +12,16 @@ const main = async () => {
         ContentType: 'image/png'
       },
       params: {
-        s: '256'
+        s: '1024'
       }
     })
     .catch(err => console.error(err))
-
-  const img = await sharp(Buffer.from(res.data))
+  await sharp(Buffer.from(res.data))
+    .resize(1024)
     .png()
-    .toBuffer()
-  const buf = await toIco([img], {
-    resize: true
-  })
-  fs.writeFileSync('static/favicon.ico', buf, 'binary')
+    .toFile('static/icon.png', (err, info) => {
+      if (err) console.error(err)
+    })
 }
 
 main()
