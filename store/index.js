@@ -36,45 +36,54 @@ const PER_PAGE = 100
 
 export const actions = {
   async nuxtServerInit({ commit }) {
-    const res = await this.$http.$get(
-      'https://raw.githubusercontent.com/ozh/github-colors/master/colors.json'
-    )
-    commit('setLanguages', res)
+    try {
+      const res = await this.$http.$get(
+        'https://raw.githubusercontent.com/ozh/github-colors/master/colors.json'
+      )
+      commit('setLanguages', res)
+    } catch (err) {}
   },
   async setUserAction({ commit, state }, userName) {
-    const res = await this.$http.get(`users/${userName}`, {
-      headers: {
-        'If-None-Match': state.userETag
+    try {
+      const res = await this.$http.get(`users/${userName}`, {
+        headers: {
+          'If-None-Match': state.userETag
+        }
+      })
+      if (res.status === 200) {
+        console.log(res)
+        commit('setUser', await res.json())
+        commit('setUserETag', res.headers.get('etag'))
       }
-    })
-    if (res.status === 200) {
-      commit('setUser', await res.json())
-      commit('setUserETag', res.headers.get('etag'))
-    }
+    } catch (err) {}
   },
   async setReposAction({ commit, state }, userName) {
     let page = 1
     let repos = []
     let firstResponse
     for (;;) {
-      const res = await this.$http.get(
-        `users/${userName}/repos?per_page=${PER_PAGE}&page=${page}`,
-        {
-          headers: {
-            'If-None-Match': state.reposETag
+      try {
+        const res = await this.$http.get(
+          `users/${userName}/repos?per_page=${PER_PAGE}&page=${page}`,
+          {
+            headers: {
+              'If-None-Match': state.reposETag
+            }
+          }
+        )
+        if (page === 1) firstResponse = res
+        if (res.status === 200) {
+          const data = await res.json()
+          repos = repos.concat(data)
+          if (data.length === PER_PAGE) {
+            page++
+            continue
           }
         }
-      )
-      if (page === 1) firstResponse = res
-      if (res.status === 200) {
-        const data = await res.json()
-        repos = repos.concat(data)
-        if (data.length === PER_PAGE) {
-          page++
-          continue
-        }
+        break
+      } catch (err) {
+        return
       }
-      break
     }
     commit('setRepos', repos)
     commit('setReposETag', firstResponse.headers.get('etag'))
@@ -84,24 +93,28 @@ export const actions = {
     let repos = []
     let firstResponse
     for (;;) {
-      const res = await this.$http.get(
-        `users/${userName}/starred?per_page=${PER_PAGE}&page=${page}`,
-        {
-          headers: {
-            'If-None-Match': state.starsETag
+      try {
+        const res = await this.$http.get(
+          `users/${userName}/starred?per_page=${PER_PAGE}&page=${page}`,
+          {
+            headers: {
+              'If-None-Match': state.starsETag
+            }
+          }
+        )
+        if (page === 1) firstResponse = res
+        if (res.status === 200) {
+          const data = await res.json()
+          repos = repos.concat(data)
+          if (data.length === PER_PAGE) {
+            page++
+            continue
           }
         }
-      )
-      if (page === 1) firstResponse = res
-      if (res.status === 200) {
-        const data = await res.json()
-        repos = repos.concat(data)
-        if (data.length === PER_PAGE) {
-          page++
-          continue
-        }
+        break
+      } catch (err) {
+        return
       }
-      break
     }
     commit('setStars', repos)
     commit('setStarsETag', firstResponse.headers.get('etag'))

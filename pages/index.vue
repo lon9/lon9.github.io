@@ -1,32 +1,25 @@
 <template>
   <div>
-    <no-ssr>
-      <div v-if="user === null">
-        loading...
-      </div>
-      <div v-else>
-        <section v-if="Object.keys(user).length != 0" id="profile">
-          <Profile :user="user" />
-        </section>
-        <section v-if="hasPageRepos.length != 0" id="pages">
-          <GithubPages :repos="hasPageRepos" />
-        </section>
-        <section v-if="repos.length != 0" id="repos">
-          <Repositories
-            title="Public repositories"
-            :repos="repos"
-            :languages="languages"
-          />
-        </section>
-        <section v-if="stars.length != 0" id="stars">
-          <Repositories
-            title="Starred repositories"
-            :repos="stars"
-            :languages="languages"
-          />
-        </section>
-      </div>
-    </no-ssr>
+    <section v-if="Object.keys(user).length != 0" id="profile">
+      <Profile :user="user" />
+    </section>
+    <section v-if="hasPageRepos.length != 0" id="pages">
+      <GithubPages :repos="hasPageRepos" />
+    </section>
+    <section v-if="repos.length != 0" id="repos">
+      <Repositories
+        title="Public repositories"
+        :repos="repos"
+        :languages="languages"
+      />
+    </section>
+    <section v-if="stars.length != 0" id="stars">
+      <Repositories
+        title="Starred repositories"
+        :repos="stars"
+        :languages="languages"
+      />
+    </section>
   </div>
 </template>
 
@@ -59,6 +52,13 @@ export default {
     languages() {
       return this.$store.state.languages
     }
+  },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('setUserAction', process.env.userName),
+      store.dispatch('setReposAction', process.env.userName),
+      store.dispatch('setStarsAction', process.env.userName)
+    ])
   },
   async mounted() {
     await Promise.all([
