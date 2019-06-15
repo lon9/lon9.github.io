@@ -51,7 +51,6 @@ export const actions = {
         }
       })
       if (res.status === 200) {
-        console.log(res)
         commit('setUser', await res.json())
         commit('setUserETag', res.headers.get('etag'))
       }
