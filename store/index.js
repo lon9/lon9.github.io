@@ -40,8 +40,9 @@ export const actions = {
     let repos = []
     let res
     while (!res || res.length === PER_PAGE) {
-      res = await this.$http
-        .$get(`users/${userName}/repos?per_page=${PER_PAGE}&page=${page}`)
+      res = await this.$http.$get(
+        `users/${userName}/repos?per_page=${PER_PAGE}&page=${page}`
+      )
       repos = repos.concat(res)
       page++
     }
@@ -52,8 +53,9 @@ export const actions = {
     let repos = []
     let res
     while (!res || res.length === PER_PAGE) {
-      res = await this.$http
-        .$get(`users/${userName}/starred?per_page=${PER_PAGE}&page=${page}`)
+      res = await this.$http.$get(
+        `users/${userName}/starred?per_page=${PER_PAGE}&page=${page}`
+      )
       repos = repos.concat(res)
       page++
     }

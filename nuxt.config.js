@@ -43,6 +43,7 @@ export default {
   modules: ['@nuxt/http', '@nuxtjs/pwa'],
   manifest: {
     name: `${process.env.USER_NAME || 'rsc'}.github.io`,
+    short_name: `${process.env.USER_NAME || 'rsc'}.github.io`,
     description: `${process.env.USER_NAME || 'rsc'}'s github.io`
   },
   http: {
