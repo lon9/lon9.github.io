@@ -11,10 +11,10 @@ branches:
   - develop
 
 install:
-  - npm install
-  - npm run mkfav
-  - npm run mkicon
-  - npm run generate
+  - yarn install
+  - yarn run mkfav
+  - yarn run mkicon
+  - yarn run generate
 
 script:
   - echo "Skipping tests"

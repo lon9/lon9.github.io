@@ -5,14 +5,18 @@
     /></a>
 
     <p>
+      <span v-if="user.login">ID: {{ user.login }}<br /></span>
       <span v-if="user.name">Name: {{ user.name }}<br /></span>
       <span v-if="user.bio">Bio: {{ user.bio }}<br /></span>
       <span v-if="user.location">Location: {{ user.location }}<br /></span>
       <span v-if="user.email">Email: {{ user.email }}<br /></span>
       <span v-if="user.company">Company: {{ user.company }}<br /></span>
       <span v-if="user.blog"
-        >URL: <a target="_blank" :href="user.blog">{{ user.blog }}</a></span
-      >
+        >URL: <a target="_blank" :href="user.blog">{{ user.blog }}</a
+        ><br
+      /></span>
+      <span>Followers: {{ user.followers }}<br /></span>
+      <span>Following: {{ user.following }}<br /></span>
     </p>
   </div>
 </template>
