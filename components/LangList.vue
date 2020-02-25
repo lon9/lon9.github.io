@@ -18,19 +18,18 @@
       <tbody>
         <tr v-for="lang in langs" :key="lang.name">
           <td>
+            <span v-if="!lang.name">
+              Document
+            </span>
             <font
+              v-else
               :color="
                 languages[lang.name] != undefined
                   ? languages[lang.name].color
                   : '#000000'
               "
             >
-              <span v-if="!lang.name">
-                Doc
-              </span>
-              <span v-else>
-                {{ lang.name }}
-              </span>
+              {{ lang.name }}
             </font>
           </td>
           <td>
