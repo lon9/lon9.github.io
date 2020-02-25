@@ -88,6 +88,13 @@ export default {
       store.dispatch('setReposAction', process.env.userName),
       store.dispatch('setStarsAction', process.env.userName)
     ])
+  },
+  async mounted() {
+    await Promise.all([
+      this.$store.dispatch('setUserAction', process.env.userName),
+      this.$store.dispatch('setReposAction', process.env.userName),
+      this.$store.dispatch('setStarsAction', process.env.userName)
+    ])
   }
 }
 </script>
