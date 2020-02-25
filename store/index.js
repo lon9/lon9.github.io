@@ -1,7 +1,4 @@
 export const state = () => ({
-  userETag: '',
-  reposETag: '',
-  starsETag: '',
   user: null,
   repos: [],
   stars: [],
@@ -9,15 +6,6 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setUserETag(state, etag) {
-    state.userETag = etag
-  },
-  setReposETag(state, etag) {
-    state.reposETag = etag
-  },
-  setStarsETag(state, etag) {
-    state.starsETag = etag
-  },
   setUser(state, user) {
     state.user = user
   },
@@ -43,79 +31,32 @@ export const actions = {
       commit('setLanguages', res)
     } catch (err) {}
   },
-  async setUserAction({ commit, state }, userName) {
-    try {
-      const res = await this.$http.get(`users/${userName}`, {
-        headers: {
-          'If-None-Match': state.userETag
-        }
-      })
-      if (res.status === 200) {
-        commit('setUser', await res.json())
-        commit('setUserETag', res.headers.get('etag'))
-      }
-    } catch (err) {}
+  async setUserAction({ commit }, userName) {
+    const res = await this.$http.$get(`users/${userName}`)
+    commit('setUser', res)
   },
-  async setReposAction({ commit, state }, userName) {
+  async setReposAction({ commit }, userName) {
     let page = 1
     let repos = []
-    let firstResponse
-    for (;;) {
-      try {
-        const res = await this.$http.get(
-          `users/${userName}/repos?per_page=${PER_PAGE}&page=${page}`,
-          {
-            headers: {
-              'If-None-Match': state.reposETag
-            }
-          }
-        )
-        if (page === 1) firstResponse = res
-        if (res.status === 200) {
-          const data = await res.json()
-          repos = repos.concat(data)
-          if (data.length === PER_PAGE) {
-            page++
-            continue
-          }
-        }
-        break
-      } catch (err) {
-        return
-      }
+    let res
+    while (!res || res.length === PER_PAGE) {
+      res = await this.$http
+        .$get(`users/${userName}/repos?per_page=${PER_PAGE}&page=${page}`)
+      repos = repos.concat(res)
+      page++
     }
     commit('setRepos', repos)
-    commit('setReposETag', firstResponse.headers.get('etag'))
   },
-  async setStarsAction({ commit, state }, userName) {
+  async setStarsAction({ commit }, userName) {
     let page = 1
     let repos = []
-    let firstResponse
-    for (;;) {
-      try {
-        const res = await this.$http.get(
-          `users/${userName}/starred?per_page=${PER_PAGE}&page=${page}`,
-          {
-            headers: {
-              'If-None-Match': state.starsETag
-            }
-          }
-        )
-        if (page === 1) firstResponse = res
-        if (res.status === 200) {
-          const data = await res.json()
-          repos = repos.concat(data)
-          if (data.length === PER_PAGE) {
-            page++
-            continue
-          }
-        }
-        break
-      } catch (err) {
-        return
-      }
+    let res
+    while (!res || res.length === PER_PAGE) {
+      res = await this.$http
+        .$get(`users/${userName}/starred?per_page=${PER_PAGE}&page=${page}`)
+      repos = repos.concat(res)
+      page++
     }
     commit('setStars', repos)
-    commit('setStarsETag', firstResponse.headers.get('etag'))
   }
 }

@@ -40,7 +40,6 @@ export default {
       }
     }
   },
-  plugins: [{ src: '~/plugins/localStorage.js', ssr: false }],
   modules: ['@nuxt/http', '@nuxtjs/pwa'],
   manifest: {
     name: `${process.env.USER_NAME || 'rsc'}.github.io`,
