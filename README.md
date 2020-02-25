@@ -1,6 +1,6 @@
 # github.io
 
-> My github.io.
+My github.io.
 
 ## Usage
 
@@ -10,12 +10,12 @@
 $ export USER_NAME=[Your github username]
 
 # generate favicon from your github icon
-$ npm run mkfav
+$ yarn run mkfav
 
 # generate static pages
-$ npm run generate
+$ yarn run generate
 
 # deploy to github
-$ npm run deploy
+$ yarn run deploy
 
 ```
