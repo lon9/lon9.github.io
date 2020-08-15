@@ -2,7 +2,7 @@ export const state = () => ({
   user: null,
   repos: [],
   stars: [],
-  languages: null
+  languages: null,
 })
 
 export const mutations = {
@@ -17,7 +17,7 @@ export const mutations = {
   },
   setLanguages(state, languages) {
     state.languages = languages
-  }
+  },
 }
 
 const PER_PAGE = 100
@@ -60,5 +60,5 @@ export const actions = {
       page++
     }
     commit('setStars', repos)
-  }
+  },
 }

@@ -9,13 +9,13 @@ const main = async () => {
     .get(res.data.avatar_url, {
       responseType: 'arraybuffer',
       headers: {
-        ContentType: 'image/png'
+        ContentType: 'image/png',
       },
       params: {
-        s: '1024'
-      }
+        s: '1024',
+      },
     })
-    .catch(err => console.error(err))
+    .catch((err) => console.error(err))
   await sharp(Buffer.from(res.data))
     .resize(1024)
     .png()

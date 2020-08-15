@@ -11,19 +11,17 @@ const main = async () => {
     .get(res.data.avatar_url, {
       responseType: 'arraybuffer',
       headers: {
-        ContentType: 'image/png'
+        ContentType: 'image/png',
       },
       params: {
-        s: '256'
-      }
+        s: '256',
+      },
     })
-    .catch(err => console.error(err))
+    .catch((err) => console.error(err))
 
-  const img = await sharp(Buffer.from(res.data))
-    .png()
-    .toBuffer()
+  const img = await sharp(Buffer.from(res.data)).png().toBuffer()
   const buf = await toIco([img], {
-    resize: true
+    resize: true,
   })
   fs.writeFileSync('static/favicon.ico', buf, 'binary')
 }
