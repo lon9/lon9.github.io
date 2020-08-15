@@ -4,7 +4,7 @@ export default {
    */
   head: {
     htmlAttrs: {
-      lang: 'en'
+      lang: 'en',
     },
     title: `${process.env.USER_NAME || 'rsc'}.github.io`,
     meta: [
@@ -13,10 +13,10 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: `${process.env.USER_NAME || 'rsc'}'s github.io`
-      }
+        content: `${process.env.USER_NAME || 'rsc'}'s github.io`,
+      },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   /*
    ** Customize the progress bar color
@@ -35,21 +35,21 @@ export default {
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
-          exclude: /(node_modules)/
+          exclude: /(node_modules)/,
         })
       }
-    }
+    },
   },
   modules: ['@nuxt/http', '@nuxtjs/pwa'],
   manifest: {
     name: `${process.env.USER_NAME || 'rsc'}.github.io`,
     short_name: `${process.env.USER_NAME || 'rsc'}.github.io`,
-    description: `${process.env.USER_NAME || 'rsc'}'s github.io`
+    description: `${process.env.USER_NAME || 'rsc'}'s github.io`,
   },
   http: {
-    baseURL: 'https://api.github.com'
+    baseURL: 'https://api.github.com',
   },
   env: {
-    userName: process.env.USER_NAME || 'rsc'
-  }
+    userName: process.env.USER_NAME || 'rsc',
+  },
 }

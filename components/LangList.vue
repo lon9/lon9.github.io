@@ -50,14 +50,14 @@ export default {
       type: Array,
       default: () => {
         return []
-      }
+      },
     },
     languages: {
       type: Object,
       default: () => {
         return {}
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>

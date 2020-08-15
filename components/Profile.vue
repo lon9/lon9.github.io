@@ -26,8 +26,8 @@ export default {
   props: {
     user: {
       type: Object,
-      default: null
-    }
-  }
+      default: null,
+    },
+  },
 }
 </script>

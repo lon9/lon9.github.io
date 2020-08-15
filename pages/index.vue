@@ -37,7 +37,14 @@ export default {
     Profile,
     Repositories,
     GithubPages,
-    LangList
+    LangList,
+  },
+  async fetch({ store }) {
+    await Promise.all([
+      store.dispatch('setUserAction', process.env.userName),
+      store.dispatch('setReposAction', process.env.userName),
+      store.dispatch('setStarsAction', process.env.userName),
+    ])
   },
   computed: {
     user() {
@@ -50,7 +57,7 @@ export default {
       return this.$store.state.stars
     },
     hasPageRepos() {
-      return this.$store.state.repos.filter(repo => {
+      return this.$store.state.repos.filter((repo) => {
         return repo.has_pages && repo.name !== `${this.user.login}.github.io`
       })
     },
@@ -59,7 +66,7 @@ export default {
     },
     usedLanguages() {
       let langs = {}
-      this.$store.state.repos.forEach(repo => {
+      this.$store.state.repos.forEach((repo) => {
         if (!langs[repo.language])
           langs[repo.language] = { name: repo.language, num: 1, rate: 100 }
         else langs[repo.language].num++
@@ -80,22 +87,15 @@ export default {
         return 0
       })
       return langs
-    }
-  },
-  async fetch({ store }) {
-    await Promise.all([
-      store.dispatch('setUserAction', process.env.userName),
-      store.dispatch('setReposAction', process.env.userName),
-      store.dispatch('setStarsAction', process.env.userName)
-    ])
+    },
   },
   async mounted() {
     await Promise.all([
       this.$store.dispatch('setUserAction', process.env.userName),
       this.$store.dispatch('setReposAction', process.env.userName),
-      this.$store.dispatch('setStarsAction', process.env.userName)
+      this.$store.dispatch('setStarsAction', process.env.userName),
     ])
-  }
+  },
 }
 </script>
 <style>

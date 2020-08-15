@@ -25,20 +25,20 @@ export default {
   props: {
     title: {
       type: String,
-      default: ''
+      default: '',
     },
     repos: {
       type: Array,
       default: () => {
         return []
-      }
+      },
     },
     languages: {
       type: Object,
       default: () => {
         return {}
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>
