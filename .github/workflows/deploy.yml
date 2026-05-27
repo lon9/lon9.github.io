@@ -33,8 +33,9 @@ jobs:
         env:
           NEXT_PUBLIC_GITHUB_USERNAME: lon9
 
-      - name: Deploy to gh-pages branch
+      - name: Deploy to master branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
+          publish_branch: master
