@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "10"
+  - "22"
 
 cache:
   directories:
@@ -8,22 +8,23 @@ cache:
 
 branches:
   only:
-  - develop
+    - develop
+
+env:
+  global:
+    - NEXT_PUBLIC_GITHUB_USERNAME=lon9
 
 install:
-  - yarn install
-  - yarn run mkfav
-  - yarn run mkicon
-  - yarn run generate
+  - npm install
 
 script:
-  - echo "Skipping tests"
+  - npm run build
 
 deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_ACCESS_TOKEN
   target-branch: master
-  local-dir: dist
+  local-dir: out
   on:
     branch: develop

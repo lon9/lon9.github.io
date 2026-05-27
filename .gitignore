@@ -1,13 +1,23 @@
-# dependencies
-node_modules
+# Next.js
+.next/
+out/
+node_modules/
+npm-debug.log*
 
-# logs
-npm-debug.log
+# env
+.env.local
+.env.*.local
 
-# Nuxt build
-.nuxt
+# OS
+.DS_Store
+Thumbs.db
 
-# Nuxt generate
-dist
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
 
-sw.*
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
